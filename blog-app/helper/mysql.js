@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
     connectionLimit:100,
     host:"localhost",
     user:"root",
@@ -9,12 +9,12 @@ const connection = mysql.createConnection({
     insecureAuth: true,
 });
 
-connection.connect((err) => {
+pool.getConnection((err, connection) => {
     if (err) {
-      console.error('MySQL bağlantı hatası: ' + err.stack);
-      return;
+        console.error('MySQL bağlantı hatası: ' + err.stack);
+        return;
     }
     console.log('MySQL bağlantısı başarılı, bağlantı ID: ' + connection.threadId);
-  });
+});
 
-module.exports = connection;
+module.exports = pool;
